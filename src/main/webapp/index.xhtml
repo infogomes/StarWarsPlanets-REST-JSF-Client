@@ -1,0 +1,110 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Planetas</title>
+</h:head>
+<h:body style="background-color: #E8E8E8;">
+
+
+	<h:form>
+		<p:panel header="Cadastro de Planetas">
+			<h:panelGrid id="idGridFormulario" columns="3" cellpadding="5"
+				style="margin-left: 250px;">
+				<p:outputLabel for="idNome" value="Nome: " />
+				<p:inputText id="idNome" value="#{planetControllerBean.nome}"
+					placeholder="Ex: Jupiter" required="true"
+					requiredMessage="Nome é obrigatótio. " />
+				<p:message for="idNome" />
+
+				<p:outputLabel for="idTemperatura" value="Temperatura (C°): " />
+				<p:inputNumber id="idTemperatura"
+					value="#{planetControllerBean.temperatura}" placeholder="Ex: 40,00"
+					symbol=" C°" symbolPosition="s" decimalSeparator=","
+					thousandSeparator="."
+					converterMessage="Somente número é permitido." required="true"
+					requiredMessage="Temperatura é obrigatótio. ">
+					<f:validateDoubleRange minimum="0.0" maximum="200.00" />
+				</p:inputNumber>
+
+				<p:message for="idTemperatura" />
+
+				<p:outputLabel for="idTerreno" value="Terreno: " />
+				<p:inputText id="idTerreno" value="#{planetControllerBean.terreno}"
+					placeholder="Ex: Aguático, Terreno, Fogo, Etc..." required="true"
+					requiredMessage="Terreno é obrigatótio. " />
+				<p:message for="idTerreno" />
+
+			</h:panelGrid>
+			<br />
+
+			<p:commandButton action="#{planetControllerBean.enviaDados}"
+				ajax="true" value="Enviar Dados" icon="ui-icon-check"
+				style="width: 180px; margin-left: 250px;" validateClient="true"
+				update="idGridFormulario, panelFormulario, @form" resetValues="true" />
+
+
+
+		</p:panel>
+	</h:form>
+
+	<h:panelGrid id="panelFormulario">
+
+		<h:form id="formularioId">
+			<p:panel header="Planetas cadastrados">
+				<p:dataTable value="#{planetControllerBean.pegaDados}" id="tabelaId"
+					var="f" style="margin-right:auto; margin-left:auto;">
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="ID" />
+						</f:facet>
+						<center>
+							<h:outputText value="#{f.id}" />
+						</center>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Nome" />
+						</f:facet>
+						<center>
+							<h:outputText value="#{f.nome}" />
+						</center>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Temperatura" />
+						</f:facet>
+						<center>
+							<h:outputText value="#{f.temperatura} C°">
+								<f:convertNumber pattern="#,###.00"/>
+							</h:outputText>
+						</center>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Terreno" />
+						</f:facet>
+						<center>
+							<h:outputText value="#{f.terreno}" />
+						</center>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Ações" />
+						</f:facet>
+						<p:commandButton value="Excluir"
+							action="#{planetControllerBean.apagaDados(f.id)}" ajax="true"
+							update="tabelaId" />
+
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+		</h:form>
+	</h:panelGrid>
+</h:body>
+</html>
